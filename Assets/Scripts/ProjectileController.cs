@@ -18,12 +18,12 @@ public class ProjectileController : MonoBehaviour
         StartCoroutine(coroutine());
         IEnumerator coroutine()
         {
-            print("Object ini " + gameObject.name + " Tabarakan sama object ini " + collision.gameObject.name);
+            //print("Object ini " + gameObject.name + " Tabarakan sama object ini " + collision.gameObject.name);
             efectSentuhan.Play();
             Destroy(gameObject, 2f);
 
             Rigidbody rb = GetComponent<Rigidbody>();
-            gameObject.isStatic = true;
+            rb.velocity = Vector3.zero;
 
             yield return new WaitForSeconds(1f);
             projectile.Stop();
