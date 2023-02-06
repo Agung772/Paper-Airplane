@@ -39,7 +39,7 @@ namespace SimpleInputNamespace
 		private bool canFollowPointer = false;
 #pragma warning restore 0649
 
-		private bool joystickHeld = false;
+		public bool joystickHeld = false;
 		private Vector2 pointerInitialPos;
 
 		private float _1OverMovementAreaRadius;
@@ -50,7 +50,7 @@ namespace SimpleInputNamespace
 
 		private float opacity = 1f;
 
-		private Vector2 m_value = Vector2.zero;
+		public Vector2 m_value = Vector2.zero;
 		public Vector2 Value { get { return m_value; } }
 
 		private void Awake()
@@ -141,6 +141,7 @@ namespace SimpleInputNamespace
 
 		public void OnPointerDown( PointerEventData eventData )
 		{
+			print("Down");
 			joystickHeld = true;
 
 			if( isDynamicJoystick )
