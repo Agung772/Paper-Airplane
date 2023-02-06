@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     public Joystick analogMove, analogShoot;
 
     public GameObject projectilePrefab;
-    public Transform projectilePoint;
+    public Transform projectileRotate, projectileRotate1;
+    public Transform projectilePoint, projectilePoint1;
 
     private void Update()
     {
@@ -24,37 +25,58 @@ public class PlayerController : MonoBehaviour
 
     void MovePlayer()
     {
-        float horizontalInput = analogMove.m_value.x;
-        float verticalInput = analogMove.m_value.y;
+        float horizontalInput = 0;
+        float verticalInput = 0;
+        if (analogMove.joystickHeld)
+        {
+            horizontalInput = analogMove.m_value.x;
+            verticalInput = analogMove.m_value.y;
+        }
+        else
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+        }
 
 
-        Vector3 move = new Vector3(0, verticalInput, -horizontalInput);
+
+        Vector3 move = new Vector3(0.6f, verticalInput, -horizontalInput);
 
         characterController.Move(move * speedPlayer * Time.deltaTime);
     }
 
     void LimitY()
     {
-        if (transform.position.y >= 15) transform.position = new Vector3(transform.position.x, 15, transform.position.z);
-        if (transform.position.y <= -5) transform.position = new Vector3(transform.position.x, -5, transform.position.z);
+        if (transform.position.y >= 25) transform.position = new Vector3(transform.position.x, 25, transform.position.z);
+        if (transform.position.y <= 5) transform.position = new Vector3(transform.position.x, 5, transform.position.z);
     }
 
     bool cooldownShoot = true;
+    int nameProjectile;
     void PlayerShoot()
     {
         if (cooldownShoot)
         {
             if (Input.GetKey(KeyCode.Space) || analogShoot.joystickHeld)
             {
-                GameObject projectile = Instantiate(projectilePrefab, projectilePoint.position, transform.rotation);
+                GameObject projectile = Instantiate(projectilePrefab, projectilePoint.position, projectilePoint.rotation);
                 projectile.GetComponent<Rigidbody>().AddForce(projectilePoint.transform.right * speedShoot, ForceMode.Impulse);
                 Destroy(projectile, 5f);
+
+                GameObject projectile1 = Instantiate(projectilePrefab, projectilePoint1.position, projectilePoint.rotation);
+                projectile1.GetComponent<Rigidbody>().AddForce(projectilePoint1.transform.right * speedShoot, ForceMode.Impulse);
+                Destroy(projectile1, 5f);
+
+                projectile.name = projectile.name + nameProjectile.ToString();
+                nameProjectile++;
+                projectile1.name = projectile1.name + nameProjectile.ToString();
+                nameProjectile++;
 
                 cooldownShoot = false;
                 StartCoroutine(coroutine());
                 IEnumerator coroutine()
                 {
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.3f);
                     cooldownShoot = true;
                 }
             }
@@ -78,7 +100,8 @@ public class PlayerController : MonoBehaviour
         xDegree += horizontalInput * speedRotateShoot * Time.deltaTime;
         yDegree += verticalInput * speedRotateShoot * Time.deltaTime;
 
-        projectilePoint.rotation = Quaternion.Euler(0, yDegree, xDegree);
+        projectileRotate.rotation = Quaternion.Euler(0, yDegree, xDegree);
+        projectileRotate1.rotation = Quaternion.Euler(0, yDegree, xDegree);
 
         xDegree = Mathf.Clamp(xDegree, -20, 20);
         yDegree = Mathf.Clamp(yDegree, -60, 60);
