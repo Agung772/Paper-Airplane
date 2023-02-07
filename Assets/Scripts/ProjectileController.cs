@@ -30,4 +30,9 @@ public class ProjectileController : MonoBehaviour
 
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
 }

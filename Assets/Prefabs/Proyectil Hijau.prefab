@@ -19484,7 +19484,7 @@ GameObject:
   - component: {fileID: 4555238297335074986}
   m_Layer: 3
   m_Name: Proyectil Hijau
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
